@@ -66,6 +66,179 @@ namespace TaxSolutions
 
 
 
+
+        private void ConvertHalifax(string inputCsvPath)
+        {
+            string[] allLines = File.ReadAllLines(inputCsvPath);
+
+            if (allLines.Length < 2)
+            {
+                throw new InvalidOperationException("Input file does not contain sufficient rows for Halifax conversion.");
+            }
+
+            // Row numbering per spec (1-based):
+            // Row 1 is header. Data starts at row 2.
+            int headerIndex = 0;
+            int firstDataIndex = 1;
+            int endExclusive = allLines.Length;
+
+            string headerLine = allLines[headerIndex];
+
+            // Minimal deterministic guard (avoid converting wrong file type).
+            if (!headerLine.StartsWith("Transaction Date", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Input file does not appear to be a Halifax export (header mismatch).");
+            }
+
+            List<HalifaxRow> rows = new List<HalifaxRow>();
+
+            for (int i = firstDataIndex; i < endExclusive; i++)
+            {
+                string line = allLines[i];
+
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                string[] cols = SplitHalifaxCsvLine(line);
+
+                // Need columns 1,5,6,7 => indices 0,4,5,6
+                if (cols.Length < 7)
+                {
+                    continue;
+                }
+
+                string dateRaw = cols[0].Trim();
+                DateTime? date = TryParseHalifaxDate(dateRaw);
+
+                if (date is null)
+                {
+                    throw new InvalidOperationException($"Unable to parse column 1 as a date: '{dateRaw}'.");
+                }
+
+                string transactionType = cols[1].Trim();   // Column 2 (1-based)
+                string description = cols[4].Trim();       // Column 5 (1-based)
+
+                if (string.Equals(transactionType, "TFR", StringComparison.OrdinalIgnoreCase))
+                {
+                    description = "(TFR) " + description;
+                }
+
+                string debit = cols[5].Trim();   // Column 6
+                string credit = cols[6].Trim();  // Column 7
+
+
+
+
+
+
+
+                // Leave debit/credit as supplied (positive strings; may be empty).
+                // Output date must be yyyy-MM-dd.
+                string outDate = date.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                string projected = string.Join(",", outDate, description, debit, credit, "GBP");
+
+                // Sort by output column 2 then output column 1
+                rows.Add(new HalifaxRow(
+                    OutputDate: date.Value.Date,
+                    OutputCol2: description,
+                    ProjectedLine: projected));
+            }
+
+            if (rows.Count == 0)
+            {
+                throw new InvalidOperationException("No data rows were parsed for Halifax conversion.");
+            }
+
+            rows.Sort(CompareHalifaxRows);
+
+            // Determine YYYYMM from row 2, column 1 after sorting => first data row after sorting
+            string yyyymm = rows[0].OutputDate.ToString("yyyyMM", CultureInfo.InvariantCulture);
+
+            string inputFolder = Path.GetDirectoryName(inputCsvPath)
+                ?? throw new InvalidOperationException("Unable to determine input folder.");
+
+            string outputPath = Path.Combine(inputFolder, $"Halifax_{yyyymm}.csv");
+
+            using StreamWriter writer = new StreamWriter(outputPath, false);
+
+            writer.WriteLine("Booking date,Beneficiary / Originator,Debit,Credit,Currency");
+
+            for (int i = 0; i < rows.Count; i++)
+            {
+                writer.WriteLine(rows[i].ProjectedLine);
+            }
+        }
+
+        private static string[] SplitHalifaxCsvLine(string line)
+        {
+            // Your sample contains a leading apostrophe in Sort Code field and no quoted commas.
+            // Deterministic/simple split by comma is therefore correct for the provided format.
+            return line.Split(',', StringSplitOptions.None);
+        }
+
+        private static DateTime? TryParseHalifaxDate(string value)
+        {
+            // Halifax sample uses dd/MM/yyyy.
+            string[] formats = new[]
+            {
+        "dd/MM/yyyy",
+        "d/M/yyyy"
+    };
+
+            if (DateTime.TryParseExact(
+                    value,
+                    formats,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime parsed))
+            {
+                return parsed.Date;
+            }
+
+            return null;
+        }
+
+        private static int CompareHalifaxRows(HalifaxRow x, HalifaxRow y)
+        {
+            int byCol2 = string.Compare(x.OutputCol2, y.OutputCol2, StringComparison.OrdinalIgnoreCase);
+            if (byCol2 != 0)
+            {
+                return byCol2;
+            }
+
+            return DateTime.Compare(x.OutputDate, y.OutputDate);
+        }
+
+        private readonly record struct HalifaxRow(
+            DateTime OutputDate,
+            string OutputCol2,
+            string ProjectedLine);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void ConvertDeutscheBank(string inputCsvPath)
         {
             string[] allLines = File.ReadAllLines(inputCsvPath);
@@ -154,39 +327,6 @@ namespace TaxSolutions
             // Sort by column 4 (string), then by column 1 (date if parseable, else raw string)
             dataRows.Sort(CompareDbankRows);
 
-            //=========================
-
-
-            // Diagnostics: emit the first 30 sorted keys so we can see what is actually being compared.
-            string inputFolderForDiag = Path.GetDirectoryName(inputCsvPath) ?? "";
-            string diagPath = Path.Combine(inputFolderForDiag, "Dbank_sort_diagnostics.txt");
-
-            using (StreamWriter diag = new StreamWriter(diagPath, false))
-            {
-                diag.WriteLine("Sorted OutputColumn2SortKey (first 30 rows)");
-                diag.WriteLine("------------------------------------------------------------");
-
-                int limit = Math.Min(30, dataRows.Count);
-
-                for (int i = 0; i < limit; i++)
-                {
-                    diag.WriteLine($"{i + 1:00}: {DescribeLeadingChars(dataRows[i].OutputColumn2SortKey)}");
-                }
-
-                diag.WriteLine();
-                diag.WriteLine("Compare check:");
-                string a = "1+1 Telecom GmbH";
-                string b = "Deutsche Post AG";
-                diag.WriteLine($"OrdinalIgnoreCase '{a}' vs '{b}' => {string.Compare(a, b, StringComparison.OrdinalIgnoreCase)}");
-            }
-
-
-
-
-
-            //=========================
-
-
             // Determine YYYYMM from column 1, row 1 (first data row after sorting)
             DateTime? firstDate = dataRows[0].OutputColumn1Date;
 
@@ -200,11 +340,6 @@ namespace TaxSolutions
                 throw new InvalidOperationException(
                     $"Unable to determine YYYYMM because the first sorted row booking date could not be parsed: '{dataRows[0].OutputColumn1RawDate}'.");
             }
-
-
-
-
-
 
             string yyyymm = firstDate.Value.ToString("yyyyMM", CultureInfo.InvariantCulture);
 
@@ -401,6 +536,10 @@ namespace TaxSolutions
             return csvPath;
         }
 
+
+
+
+
         private void HalifaxExportButton_Click(object sender, EventArgs e)
         {
             string? csvPath = TryGetSelectedCsvPath();
@@ -409,12 +548,33 @@ namespace TaxSolutions
                 return;
             }
 
-            MessageBox.Show(
-                "Halifax export is not yet implemented.",
-                "Not Implemented",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            try
+            {
+                ConvertHalifax(csvPath);
+
+                MessageBox.Show(
+                    "Halifax conversion completed.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Conversion Failed",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
+
+
+
+
+
+
+
+
 
         private void RevolutExportButton_Click(object sender, EventArgs e)
         {
@@ -424,12 +584,225 @@ namespace TaxSolutions
                 return;
             }
 
-            MessageBox.Show(
-                "Revolut export is not yet implemented.",
-                "Not Implemented",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            try
+            {
+                ConvertRevolut(csvPath);
+
+                MessageBox.Show(
+                    "Revolut conversion completed.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Conversion Failed",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
+
+
+
+
+
+        private void ConvertRevolut(string inputCsvPath)
+        {
+            string[] allLines = File.ReadAllLines(inputCsvPath);
+
+            if (allLines.Length < 2)
+            {
+                throw new InvalidOperationException("Input file does not contain sufficient rows for Revolut conversion.");
+            }
+
+            // Row 1 is header (1-based). Ignore it.
+            int headerIndex = 0;
+            int firstDataIndex = 1;
+            int endExclusive = allLines.Length;
+
+            string headerLine = RemoveQuotes(allLines[headerIndex]);
+
+            // Minimal deterministic guard (avoid converting wrong file type).
+            if (!headerLine.StartsWith("Art,Produkt,Datum des Beginns", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Input file does not appear to be a Revolut export (header mismatch).");
+            }
+
+            List<RevolutRow> rows = new List<RevolutRow>();
+
+            for (int i = firstDataIndex; i < endExclusive; i++)
+            {
+                string line = RemoveQuotes(allLines[i]);
+
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                string[] cols = SplitRevolutCsvLine(line);
+
+                // Need source columns: 3,5,6,8 => indices 2,4,5,7
+                if (cols.Length < 8)
+                {
+                    continue;
+                }
+
+                string dateRaw = cols[2].Trim();          // Source col 3
+                string description = cols[4].Trim();      // Source col 5
+                string amountRaw = cols[5].Trim();        // Source col 6
+                string currency = cols[7].Trim();         // Source col 8
+
+                DateTime? date = TryParseRevolutDate(dateRaw);
+                if (date is null)
+                {
+                    throw new InvalidOperationException($"Unable to parse column 3 as a date: '{dateRaw}'.");
+                }
+
+                if (!decimal.TryParse(
+                        amountRaw,
+                        NumberStyles.Number | NumberStyles.AllowLeadingSign,
+                        CultureInfo.InvariantCulture,
+                        out decimal amount))
+                {
+                    throw new InvalidOperationException($"Unable to parse column 6 as a number: '{amountRaw}'.");
+                }
+
+                // Mapping:
+                // Destination col 1 = date (yyyy-MM-dd)
+                // Destination col 2 = description
+                // Destination col 3 = debit  (if amount < 0 => -amount; if amount == 0 => 0 as debit per spec)
+                // Destination col 4 = credit (if amount > 0 => amount)
+                // Destination col 5 = currency
+                string outDate = date.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                string debit = string.Empty;
+                string credit = string.Empty;
+
+                if (amount > 0m)
+                {
+                    credit = amount.ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    // amount < 0 => multiply by -1; amount == 0 => treat as debit (0) per your instruction
+                    decimal debitValue = amount * -1m;
+                    debit = debitValue.ToString(CultureInfo.InvariantCulture);
+                }
+
+                string projected = string.Join(",", outDate, description, debit, credit, currency);
+
+                rows.Add(new RevolutRow(
+                    OutputDate: date.Value.Date,
+                    OutputCol2: description,
+                    Currency: currency,
+                    ProjectedLine: projected));
+            }
+
+            if (rows.Count == 0)
+            {
+                throw new InvalidOperationException("No data rows were parsed for Revolut conversion.");
+            }
+
+            // Sort by destination column 2, then destination column 1; header excluded by construction.
+            rows.Sort(CompareRevolutRows);
+
+            // YYYYMM from destination column 1, row 2 (first data row after sorting)
+            string yyyymm = rows[0].OutputDate.ToString("yyyyMM", CultureInfo.InvariantCulture);
+
+            // Currency from destination column 5, row 2 (first data row after sorting)
+            string fileCurrency = rows[0].Currency;
+
+            if (string.IsNullOrWhiteSpace(fileCurrency))
+            {
+                throw new InvalidOperationException("Unable to determine currency for file naming (currency was empty on first sorted row).");
+            }
+
+            // Output beside input
+            string inputFolder = Path.GetDirectoryName(inputCsvPath)
+                ?? throw new InvalidOperationException("Unable to determine input folder.");
+
+            string outputPath = Path.Combine(inputFolder, $"Revolut_{yyyymm}_{fileCurrency}.csv");
+
+            using StreamWriter writer = new StreamWriter(outputPath, false);
+
+            writer.WriteLine("Booking date,Beneficiary / Originator,Debit,Credit,Currency");
+
+            for (int i = 0; i < rows.Count; i++)
+            {
+                writer.WriteLine(rows[i].ProjectedLine);
+            }
+        }
+
+        private static string RemoveQuotes(string value)
+        {
+            return value.Replace("\"", string.Empty, StringComparison.Ordinal);
+        }
+
+        private static string[] SplitRevolutCsvLine(string line)
+        {
+            // Sample data has no quoted commas. Deterministic split by comma.
+            return line.Split(',', StringSplitOptions.None);
+        }
+
+        private static DateTime? TryParseRevolutDate(string value)
+        {
+            // Confirmed: yyyy-MM-dd HH:mm:ss
+            string[] formats = new[]
+            {
+        "yyyy-MM-dd HH:mm:ss"
+    };
+
+            if (DateTime.TryParseExact(
+                    value,
+                    formats,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime parsed))
+            {
+                return parsed.Date;
+            }
+
+            return null;
+        }
+
+        private static int CompareRevolutRows(RevolutRow x, RevolutRow y)
+        {
+            int byCol2 = string.Compare(x.OutputCol2, y.OutputCol2, StringComparison.OrdinalIgnoreCase);
+            if (byCol2 != 0)
+            {
+                return byCol2;
+            }
+
+            return DateTime.Compare(x.OutputDate, y.OutputDate);
+        }
+
+        private readonly record struct RevolutRow(
+            DateTime OutputDate,
+            string OutputCol2,
+            string Currency,
+            string ProjectedLine);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private void SetCompiledDateLabel()
         {
