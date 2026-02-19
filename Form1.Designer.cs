@@ -30,13 +30,15 @@
         {
             MainTabControl = new TabControl();
             ConversionTab = new TabPage();
+            lblCompiledDate = new Label();
             ConversionButtonsPanel = new FlowLayoutPanel();
             DeutscheBankFormatButton = new Button();
             HalifaxExportButton = new Button();
             RevolutExportButton = new Button();
+            CreditCardExportButton = new Button();
+            TaxCodeImportButton = new Button();
             BrowseCsvButton = new Button();
             CsvFilePathTextBox = new TextBox();
-            lblCompiledDate = new Label();
             MainTabControl.SuspendLayout();
             ConversionTab.SuspendLayout();
             ConversionButtonsPanel.SuspendLayout();
@@ -66,6 +68,16 @@
             ConversionTab.TabIndex = 0;
             ConversionTab.Text = "ConversionTab";
             // 
+            // lblCompiledDate
+            // 
+            lblCompiledDate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblCompiledDate.AutoSize = true;
+            lblCompiledDate.Location = new Point(106, 371);
+            lblCompiledDate.Name = "lblCompiledDate";
+            lblCompiledDate.Size = new Size(97, 20);
+            lblCompiledDate.TabIndex = 4;
+            lblCompiledDate.Text = "GNAsoftware";
+            // 
             // ConversionButtonsPanel
             // 
             ConversionButtonsPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -73,6 +85,8 @@
             ConversionButtonsPanel.Controls.Add(DeutscheBankFormatButton);
             ConversionButtonsPanel.Controls.Add(HalifaxExportButton);
             ConversionButtonsPanel.Controls.Add(RevolutExportButton);
+            ConversionButtonsPanel.Controls.Add(CreditCardExportButton);
+            ConversionButtonsPanel.Controls.Add(TaxCodeImportButton);
             ConversionButtonsPanel.FlowDirection = FlowDirection.TopDown;
             ConversionButtonsPanel.Location = new Point(102, 80);
             ConversionButtonsPanel.Name = "ConversionButtonsPanel";
@@ -83,33 +97,61 @@
             // 
             // DeutscheBankFormatButton
             // 
+            DeutscheBankFormatButton.Enabled = false;
             DeutscheBankFormatButton.Location = new Point(11, 11);
             DeutscheBankFormatButton.Name = "DeutscheBankFormatButton";
             DeutscheBankFormatButton.Size = new Size(180, 30);
             DeutscheBankFormatButton.TabIndex = 3;
             DeutscheBankFormatButton.Text = "Deutsche Bank";
             DeutscheBankFormatButton.UseVisualStyleBackColor = true;
+            DeutscheBankFormatButton.Visible = false;
             DeutscheBankFormatButton.Click += DeutscheBankFormatButton_Click;
             // 
             // HalifaxExportButton
             // 
+            HalifaxExportButton.Enabled = false;
             HalifaxExportButton.Location = new Point(11, 47);
             HalifaxExportButton.Name = "HalifaxExportButton";
             HalifaxExportButton.Size = new Size(180, 30);
             HalifaxExportButton.TabIndex = 4;
             HalifaxExportButton.Text = "Halifax";
             HalifaxExportButton.UseVisualStyleBackColor = true;
+            HalifaxExportButton.Visible = false;
             HalifaxExportButton.Click += HalifaxExportButton_Click;
             // 
             // RevolutExportButton
             // 
+            RevolutExportButton.Enabled = false;
             RevolutExportButton.Location = new Point(11, 83);
             RevolutExportButton.Name = "RevolutExportButton";
             RevolutExportButton.Size = new Size(180, 30);
             RevolutExportButton.TabIndex = 5;
             RevolutExportButton.Text = "Revolut";
             RevolutExportButton.UseVisualStyleBackColor = true;
+            RevolutExportButton.Visible = false;
             RevolutExportButton.Click += RevolutExportButton_Click;
+            // 
+            // CreditCardExportButton
+            // 
+            CreditCardExportButton.Enabled = false;
+            CreditCardExportButton.Location = new Point(11, 119);
+            CreditCardExportButton.Name = "CreditCardExportButton";
+            CreditCardExportButton.Size = new Size(180, 30);
+            CreditCardExportButton.TabIndex = 6;
+            CreditCardExportButton.Text = "Credit Card";
+            CreditCardExportButton.UseVisualStyleBackColor = true;
+            CreditCardExportButton.Visible = false;
+            CreditCardExportButton.Click += CreditCardExportButton_Click;
+            // 
+            // TaxCodeImportButton
+            // 
+            TaxCodeImportButton.Location = new Point(11, 155);
+            TaxCodeImportButton.Name = "TaxCodeImportButton";
+            TaxCodeImportButton.Size = new Size(180, 30);
+            TaxCodeImportButton.TabIndex = 7;
+            TaxCodeImportButton.Text = "Import Tax Codes";
+            TaxCodeImportButton.UseVisualStyleBackColor = true;
+            TaxCodeImportButton.Click += TaxCodeImportButton_Click;
             // 
             // BrowseCsvButton
             // 
@@ -130,16 +172,6 @@
             CsvFilePathTextBox.Size = new Size(442, 27);
             CsvFilePathTextBox.TabIndex = 0;
             // 
-            // lblCompiledDate
-            // 
-            lblCompiledDate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            lblCompiledDate.AutoSize = true;
-            lblCompiledDate.Location = new Point(106, 371);
-            lblCompiledDate.Name = "lblCompiledDate";
-            lblCompiledDate.Size = new Size(97, 20);
-            lblCompiledDate.TabIndex = 4;
-            lblCompiledDate.Text = "GNAsoftware";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -147,7 +179,8 @@
             ClientSize = new Size(800, 450);
             Controls.Add(MainTabControl);
             Name = "Form1";
-            Text = "CSV conversion";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Bank statement CSV file converter";
             Load += Form1_Load;
             MainTabControl.ResumeLayout(false);
             ConversionTab.ResumeLayout(false);
@@ -167,5 +200,7 @@
         private Button HalifaxExportButton;
         private Button RevolutExportButton;
         private Label lblCompiledDate;
+        private Button CreditCardExportButton;
+        private Button TaxCodeImportButton;
     }
 }
