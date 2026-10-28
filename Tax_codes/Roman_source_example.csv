@@ -1,0 +1,440 @@
+"EXTF";700;21;"Buchungsstapel";12;20260203181010652;20260203181010650;"";"VH";"vhepfinger";452503;10701;20250101;4;20250101;20251231;"Export  Konto";"VH";1;0;0;"EUR";;"KP";;;"";;;"";""
+Umsatz (ohne Soll/Haben-Kz);Soll/Haben-Kennzeichen;WKZ Umsatz;Kurs;Basis-Umsatz;WKZ Basis-Umsatz;Konto;Gegenkonto (ohne BU-Schlüssel);BU-Schlüssel;Belegdatum;Belegfeld 1;Belegfeld 2;Skonto;Buchungstext;Postensperre;Diverse Adressnummer;Geschäftspartnerbank;Sachverhalt;Zinssperre;Beleglink;Beleginfo - Art 1;Beleginfo - Inhalt 1;Beleginfo - Art 2;Beleginfo - Inhalt 2;Beleginfo - Art 3;Beleginfo - Inhalt 3;Beleginfo - Art 4;Beleginfo - Inhalt 4;Beleginfo - Art 5;Beleginfo - Inhalt 5;Beleginfo - Art 6;Beleginfo - Inhalt 6;Beleginfo - Art 7;Beleginfo - Inhalt 7;Beleginfo - Art 8;Beleginfo - Inhalt 8;KOST1 - Kostenstelle;KOST2 - Kostenstelle;Kost-Menge;EU-Land u. UStID (Bestimmung);EU-Steuersatz (Bestimmung);Abw. Versteuerungsart;Sachverhalt L+L;Funktionsergänzung L+L;BU 49 Hauptfunktionstyp;BU 49 Hauptfunktionsnummer;BU 49 Funktionsergänzung;Zusatzinformation - Art 1;Zusatzinformation- Inhalt 1;Zusatzinformation - Art 2;Zusatzinformation- Inhalt 2;Zusatzinformation - Art 3;Zusatzinformation- Inhalt 3;Zusatzinformation - Art 4;Zusatzinformation- Inhalt 4;Zusatzinformation - Art 5;Zusatzinformation- Inhalt 5;Zusatzinformation - Art 6;Zusatzinformation- Inhalt 6;Zusatzinformation - Art 7;Zusatzinformation- Inhalt 7;Zusatzinformation - Art 8;Zusatzinformation- Inhalt 8;Zusatzinformation - Art 9;Zusatzinformation- Inhalt 9;Zusatzinformation - Art 10;Zusatzinformation- Inhalt 10;Zusatzinformation - Art 11;Zusatzinformation- Inhalt 11;Zusatzinformation - Art 12;Zusatzinformation- Inhalt 12;Zusatzinformation - Art 13;Zusatzinformation- Inhalt 13;Zusatzinformation - Art 14;Zusatzinformation- Inhalt 14;Zusatzinformation - Art 15;Zusatzinformation- Inhalt 15;Zusatzinformation - Art 16;Zusatzinformation- Inhalt 16;Zusatzinformation - Art 17;Zusatzinformation- Inhalt 17;Zusatzinformation - Art 18;Zusatzinformation- Inhalt 18;Zusatzinformation - Art 19;Zusatzinformation- Inhalt 19;Zusatzinformation - Art 20;Zusatzinformation- Inhalt 20;Stück;Gewicht;Zahlweise;Forderungsart;Veranlagungsjahr;Zugeordnete Fälligkeit;Skontotyp;Auftragsnummer;Buchungstyp (Anzahlungen);USt-Schlüssel (Anzahlungen);EU-Land (Anzahlungen);Sachverhalt L+L (Anzahlungen);EU-Steuersatz (Anzahlungen);Erlöskonto (Anzahlungen);Herkunft-Kz;Buchungs GUID;KOST-Datum;SEPA-Mandatsreferenz;Skontosperre;Gesellschaftername;Beteiligtennummer;Identifikationsnummer;Zeichnernummer;Postensperre bis;Bezeichnung SoBil-Sachverhalt;Kennzeichen SoBil-Buchung;Festschreibung;Leistungsdatum;Datum Zuord. Steuerperiode;Fälligkeit;Generalumkehr (GU);Steuersatz;Land
+38,8;S;;;;;6495;1486;;3112;;;;TWILIO INC
+23;S;;;;;6495;1486;;0101;;;;OPENAI *CHATGPT SUBSCR
+58;S;;;;;6673;1486;;0201;;;;DB VERTRIEB GMBH
+80;S;;;;;2300;1486;;0201;;;;e.on
+277,6;S;;;;;2300;1486;;0201;;;;WEG HOEHENKIRCHEN
+0;H;1500;;;GBP;4338;1486;;0601;JAG20241125.5;;;AECOM LIMITED
+0;H;3100;;;GBP;4338;1486;;0601;JAG20241225.1;;;SURVEY SUPPLIES LI
+950;S;;;;;6680;1486;;0701;;;;HUNTINGDON OSTEOPA
+2410;H;;;;;4338;1486;;0701;JAG20241225.2;;;PRECISE CONSTRUCTION INSTRUMNETS L
+39,11;S;;;;;6495;1486;;0701;;;;TWILIO INC
+143,82;S;;;;;6673;1486;;0801;;;;RYANAIR224TWGI9M
+185,88;S;;;;;6673;1486;;0901;;;;LUFTHAN2202218605229
+0;H;350;;;GBP;4338;1486;;0901;JAG20241225.4;;;TRI-TECH LIMITED
+252;S;;;;;6673;1486;;1301;;;;Lufthansa 220636639892
+252;S;;;;;6673;1486;;1301;;;;Lufthansa 220636639892
+28,14;S;;;;;6673;1486;;1301;;;;Trainline
+39,76;S;;;;;6495;1486;;1301;;;;TWILIO INC
+764,62;S;;;;;6530;1486;;1401;;;;FOUR PAW RACING
+11,5;S;;;;;6855;1486;;1401;;;;monatlicher Kartenpreis
+68,39;S;;;;;6673;1486;;1401;;;;RYANAIR224TWGI9M
+110,22;S;;;;;6673;1486;;1401;;;;Trainline
+10,24;S;;;;;6673;1486;;1401;;;;VEEZU
+12,41;S;;;;;6673;1486;;1401;;;;VEEZU
+8,12;S;;;;;6673;1486;;1401;;;;VEEZU
+18,36;S;;;;;2300;1486;;1501;;;;Bayerischer Rundfunk
+7,95;S;;;;;6673;1486;;1501;;;;Starbucks
+860;S;;;;;2200;1486;;1501;;;;Techniker Krankenkasse
+16,6;S;;;;;6673;1486;;1501;;;;TFL TRAVEL CH
+7,65;S;;;;;6530;1486;;1601;;;;Circle K Gas Station
+5,39;S;;;;;6495;1486;;1601;;;;Hetzner Online GmbH
+34,99;S;;;;;6495;1486;;1701;;;;1+1 Telecom GmbH
+2386,45;S;;;;;6530;1486;;1701;;;;FOUR PAW RACING
+13796,86;H;;;;;4338;1486;;1701;;;;PILBARA IRON COMPANY (SERVI CES) PTYO/18/CENTRAL PARK 1
+32,24;S;;;;;6673;1486;;1701;;;;Trainline
+21,67;S;;;;;4338;1486;;2001;;;;Telefonica Germany GmbH + Co. OHG
+38,82;S;;;;;6495;1486;;2001;;;;TWILIO INC
+11,87;S;;;;;6805;1486;9;2301;;;;giffgaff
+11,09;S;;;;;6855;1486;;2401;;;;Halifax bank charges
+38,73;S;;;;;6495;1486;;2801;;;;TWILIO INC
+28,29;S;;;;;6673;1486;;3001;;;;Trainline
+0;H;350;;;GBP;4338;1486;;3001;JAG20250127.4;;;TRI-TECH LIMITED
+8,98;S;;;;;6855;1486;;3101;;;;Credit card charges
+633,2;H;;;;;2180;1486;;3101;;;;Deutsche Post AG
+850;H;;;;;4338;1486;;3101;JAG20250127.5;;;ZENITH LANDMALING A/S
+23;S;;;;;6495;1486;;0102;;;;OPENAI *CHATGPT SUBSCR
+58;S;;;;;6673;1486;;0302;;;;DB VERTRIEB GMBH
+80;S;;;;;2300;1486;;0302;;;;e.on
+950;S;;;;;6680;1486;;0302;;;;HUNTINGDON OSTEOPA
+16,6;S;;;;;6673;1486;;0302;;;;TFL TRAVEL CH
+277,6;S;;;;;2300;1486;;0302;;;;WEG HOEHENKIRCHEN
+0;H;1328;;;GBP;4338;1486;;0402;JAG20241125.3;;;JWG SURVEY & ENGIN
+39,01;S;;;;;6495;1486;;0402;;;;TWILIO INC
+0;H;3100;;;GBP;4338;1486;;0502;JAG20250127.1;;;SURVEY SUPPLIES LI
+11,09;S;;;;;6855;1486;;0702;;;;Halifax bank charges
+2410;H;;;;;4338;1486;;0702;JAG20250127.2;;;PRECISE CONSTRUCTION INSTRUMNETS L
+38,81;S;;;;;6495;1486;;0802;;;;TWILIO INC
+11,09;S;;;;;6855;1486;;1002;;;;Halifax bank charges
+1004;S;;;;;7610;1486;;1002;;;;To Gemeinde Hohenkirchen-Siegertsbrunn
+1003;S;;;;;7610;1486;;1002;;;;To Gemeinde Hohenkirchen-Siegertsbrunn
+2264,7;S;;;;;7610;1486;;1002;;;;To Gemeinde Hohenkirchen-Siegertsbrunn
+11,09;S;;;;;6855;1486;;1402;;;;Halifax bank charges
+11,5;S;;;;;6855;1486;;1402;;;;monatlicher Kartenpreis
+18,36;S;;;;;2300;1486;;1702;;;;Bayerischer Rundfunk
+5,39;S;;;;;6495;1486;;1702;;;;Hetzner Online GmbH
+924,69;S;;;;;2200;1486;;1702;;;;Techniker Krankenkasse
+34,99;S;;;;;6495;1486;;1802;;;;1+1 Telecom GmbH
+1020,55;S;;;;;6673;1486;;1802;;;;EMIRATES1762384954099
+17,5;S;;;;;7610;1486;;1802;;;;Gemeinde Hohenkirchen-Siegertsbrunn
+11,09;S;;;;;6855;1486;;1802;;;;Halifax bank charges
+91,08;S;;;;;6673;1486;;1802;;;;LUFTHAN2202221037335
+24,2;S;;;;;6805;1486;9;2002;;;;giffgaff
+21,82;S;;;;;6805;1486;9;2002;;;;Telefonica Germany GmbH + Co. OHG
+12,1;S;;;;;6805;1486;9;2302;;;;giffgaff
+3,45;S;;;;;6673;1486;;2402;;;;Trainline
+27,11;S;;;;;6673;1486;;2402;;;;Trainline
+38,55;S;;;;;6495;1486;;2402;;;;TWILIO INC
+39,93;S;;;;;6815;1486;;2502;;;;POWERSUPPLYSHOP.CO.UK
+16,6;S;;;;;6673;1486;;2502;;;;TFL TRAVEL CH
+0;H;550;;;GBP;4338;1486;;2702;JAG20250225.4;;;TRI-TECH LIMITED
+6,3;S;;;;;6855;1486;;2802;;;;Credit card charges
+633,2;S;;;;;4338;1486;;2802;;;;Deutsche Post AG
+28,51;S;;;;;6673;1486;;2802;;;;Trainline
+2,25;S;;;;;6673;1486;;2802;;;;Trainline
+850;S;;;;;4338;1486;;2802;JAG20250225.5;;;ZENITH LANDMALING A/S
+23;S;;;;;6495;1486;;0103;;;;OPENAI *CHATGPT SUBSCR
+115,58;S;;;;;6530;1486;;0203;;;;Autodoc AG
+58;S;;;;;6673;1486;;0303;;;;DB VERTRIEB GMBH
+80;S;;;;;2300;1486;;0303;;;;e.on
+11,09;S;;;;;6855;1486;;0303;;;;Halifax bank charges
+2733;S;;;;;2150;1486;;0303;;;;To Finanzamt Munchen
+277,6;S;;;;;2300;1486;;0303;;;;WEG HOEHENKIRCHEN
+370;S;;;;;6495;1486;;0603;;;;EPPLUS SOFTWARE AB
+950;S;;;;;6680;1486;;0603;;;;HUNTINGDON OSTEOPA
+0;H;1000;;;GBP;4338;1486;;0603;JAG20250127.3;;;JWG SURVEY & ENGIN
+11,09;S;;;;;6855;1486;;0703;;;;Halifax bank charges
+0;H;3100;;;GBP;4338;1486;;0703;JAG20250225.1;;;SURVEY SUPPLIES LI
+37,24;S;;;;;6495;1486;;0803;;;;TWILIO INC
+25,56;S;;;;;6530;1486;;1003;;;;Halfords
+11,09;S;;;;;6855;1486;;1003;;;;Halifax bank charges
+2410;H;;;;;4338;1486;;1003;JAG20250225.2;;;PRECISE CONSTRUCTION INSTRUMNETS L
+57,62;S;;;;;6680;1486;;1003;;;;SP SIMS PARTS WEBSIT
+238,41;S;;;;;6673;1486;;1103;;;;BRITISH A1252205397355
+60,88;S;;;;;6530;1486;;1103;;;;SP GENIUS PARTS
+0;H;1000;;;GBP;4338;1486;;1403;JAG20250225.3;;;JWG SURVEY & ENGIN
+11,5;S;;;;;6855;1486;;1403;;;;monatlicher Kartenpreis
+28,31;S;;;;;6673;1486;;1403;;;;Trainline
+5,39;S;;;;;6495;1486;;1603;;;;Hetzner Online GmbH
+18,36;S;;;;;2300;1486;;1703;;;;Bayerischer Rundfunk
+924,69;S;;;;;2200;1486;;1703;;;;Techniker Krankenkasse
+16,6;S;;;;;6673;1486;;1703;;;;TFL TRAVEL CH
+34,99;S;;;;;6495;1486;;1803;;;;1+1 Telecom GmbH
+619,19;S;;;;;6495;1486;;2003;;;;TeamViewer GmbH
+31,2;S;;;;;6805;1486;9;2003;;;;Telefonica Germany GmbH + Co. OHG
+5;S;;;;;6673;1486;;2003;;;;UBER   *TRIP
+26,6;S;;;;;6673;1486;;2003;;;;UBER   *TRIP
+11,09;S;;;;;6855;1486;;2103;;;;Halifax bank charges
+11,96;S;;;;;6805;1486;9;2303;;;;giffgaff
+37,26;S;;;;;6495;1486;;2303;;;;TWILIO INC
+850;H;;;;;4338;1486;;2603;JAG20250325.5;;;ZENITH LANDMALING A/S
+19,42;S;;;;;6855;1486;;2703;;;;Credit card charges
+219,96;S;;;;;6680;1486;;2803;;;;SP KARDENA EU
+219,96;S;;;;;6680;1486;;2803;;;;SP KARDENA EU
+20,7;S;;;;;6855;1486;;3103;;;;Bank charges
+636,87;H;;;;;2180;1486;;3103;;;;Deutsche Post AG
+11,09;S;;;;;6855;1486;;3103;;;;Halifax bank charges
+58;S;;;;;6673;1486;;0104;;;;DB VERTRIEB GMBH
+23;S;;;;;6495;1486;;0104;;;;OPENAI *CHATGPT SUBSCR
+277,6;S;;;;;2300;1486;;0104;;;;WEG HOEHENKIRCHEN
+80;S;;;;;2300;1486;;0204;;;;e.on
+272;S;;;;;6673;1486;;0404;;;;EXPEDIA 73004309082405
+50;S;;;;;6673;1486;;0604;;;;BRITISH A1254244887706
+0;H;3100;;;GBP;4338;1486;;0704;JAG20250325.1;;;SURVEY SUPPLIES LI
+27,67;S;;;;;6673;1486;;0704;;;;Trainline
+11,09;S;;;;;6855;1486;;0804;;;;Halifax bank charges
+950;S;;;;;6680;1486;;0804;;;;HUNTINGDON OSTEOPA
+2700;H;;;;;4338;1486;;0804;JAG20250325.7;;;TECHSOL TECHNICAL
+16,63;S;;;;;6673;1486;;0804;;;;Transport for London
+404,8;S;;;;;6673;1486;;1004;;;;BRITISH A1252207592458
+72,53;S;;;;;6673;1486;;1204;;;;Trainline
+3,62;S;;;;;6673;1486;;1304;;;;Starbucks
+11,09;S;;;;;6855;1486;;1404;;;;Halifax bank charges
+11,5;S;;;;;6855;1486;;1404;;;;monatlicher Kartenpreis
+2410;H;;;;;4338;1486;;1404;JAG20250325.2;;;PRECISE CONSTRUCTION INSTRUMNETS L
+35,53;S;;;;;6495;1486;;1404;;;;TWILIO INC
+18,36;S;;;;;2300;1486;;1504;;;;Bayerischer Rundfunk
+924,69;S;;;;;2200;1486;;1504;;;;Techniker Krankenkasse
+5,39;S;;;;;6495;1486;;1604;;;;Hetzner Online GmbH
+34,99;S;;;;;6495;1486;;1704;;;;1+1 Telecom GmbH
+38,19;S;;;;;6673;1486;;1704;;;;Trainline
+16,63;S;;;;;6673;1486;;1704;;;;Transport for London
+11,09;S;;;;;6855;1486;;2204;;;;Halifax bank charges
+30,73;S;;;;;6805;1486;9;2204;;;;Telefonica Germany GmbH + Co. OHG
+11,73;S;;;;;6805;1486;9;2304;;;;giffgaff
+12,47;S;;;;;6855;1486;;2504;;;;Credit card charges
+0;H;1000;;;GBP;4338;1486;;2504;JAG20250325.3;;;JWG SURVEY & ENGIN
+27,78;S;;;;;6673;1486;;2504;;;;Trainline
+16,63;S;;;;;6673;1486;;2504;;;;Transport for London
+11,09;S;;;;;6855;1486;;2904;;;;Halifax bank charges
+636,87;H;;;;;2180;1486;;3004;;;;Deutsche Post AG
+82,88;S;;;;;6673;1486;;3004;;;;EMIRATES
+23;S;;;;;6495;1486;;0105;;;;OPENAI *CHATGPT SUBSCR
+0;H;550;;;GBP;4338;1486;;0105;JAG20250325.6;;;TRI-TECH LIMITED
+12,68;S;;;;;6495;1486;;0205;;;;CBA*CCLEANER PIRIFORM
+58;S;;;;;6673;1486;;0205;;;;DB VERTRIEB GMBH
+80;S;;;;;2300;1486;;0205;;;;e.on
+277,6;S;;;;;2300;1486;;0205;;;;WEG HOEHENKIRCHEN
+2000;H;;;;;4338;1486;;0505;JAG20250425.5;;;ZENITH LANDMALING A/S
+35,85;S;;;;;6495;1486;;0705;;;;TWILIO INC
+0;H;31657;;;GBP;4338;1486;;0905;JAG20250407.1 JAG20250407.2;;;AECOM LIMITED
+11,5;S;;;;;6855;1486;;1405;;;;monatlicher Kartenpreis
+432,84;S;;;;;6673;1486;;1405;;;;Opodo (Flight booking - never again)
+18,36;S;;;;;2300;1486;;1505;;;;Bayerischer Rundfunk
+924,69;S;;;;;2200;1486;;1505;;;;Techniker Krankenkasse
+17,5;S;;;;;7610;1486;;1605;;;;Gemeinde Hohenkirchen-Siegertsbrunn
+5,39;S;;;;;6495;1486;;1605;;;;Hetzner Online GmbH
+3900;H;;;;;4338;1486;;1605;JAG20250325.8;;;TECHSOL TECHNICAL
+34,99;S;;;;;6495;1486;;1905;;;;1+1 Telecom GmbH
+3000;H;;;;;2150;1486;;1905;;;;Finanzamt 80303 München
+5550;S;;;;;4338;1486;;1905;;;;HMRC - ACCOUNTS OF
+950;S;;;;;6680;1486;;1905;;;;HUNTINGDON OSTEOPA
+1100;S;;;;;7610;1486;;1905;;;;To Gemeinde Hohenkirchen-Siegertsbrunn
+20,2;S;;;;;6805;1486;9;2005;;;;Telefonica Germany GmbH + Co. OHG
+11,94;S;;;;;6805;1486;9;2305;;;;giffgaff
+0,09;S;;;;;6855;1486;;2405;;;;Bank charges
+20,99;S;;;;;6673;1486;;2605;;;;Trainline
+3326,45;S;;;;;6530;1486;;2705;;;;FOUR PAW RACING
+1863;S;;;;;6815;1486;;2705;;;;Techsol Technical Solutions Ltd (GNSS rental)
+31,82;S;;;;;6673;1486;;2705;;;;Trainline
+16,63;S;;;;;6673;1486;;2705;;;;Transport for London
+1000;H;;;;;4338;1486;;2705;JAG20250525.4;;;ZENITH LANDMALING A/S
+2,62;S;;;;;6855;1486;;2805;;;;Credit card charges
+2900;S;;;;;2150;1486;;2905;;;;Finanzamt 80303 München
+11,09;S;;;;;6855;1486;;2905;;;;Halifax bank charges
+0;H;550;;;GBP;4338;1486;;2905;JAG20250428.3;;;TRI-TECH LIMITED
+636,87;H;;;;;2180;1486;;3005;;;;Deutsche Post AG
+35,43;S;;;;;6495;1486;;3005;;;;TWILIO INC
+67,79;S;;;;;6815;1486;;0206;;;;ADAC Versicherung AG
+94;S;;;;;6815;1486;;0206;;;;Allg.Deutscher Automobil-Club ADAC e.V.
+58;S;;;;;6673;1486;;0206;;;;DB VERTRIEB GMBH
+80;S;;;;;2300;1486;;0206;;;;e.on
+950;S;;;;;6680;1486;;0206;;;;HUNTINGDON OSTEOPA
+23;S;;;;;6495;1486;;0206;;;;OPENAI *CHATGPT SUBSCR
+277,6;S;;;;;2300;1486;;0206;;;;WEG HOEHENKIRCHEN
+11,09;S;;;;;6855;1486;;0306;;;;Halifax bank charges
+0,18;S;;;;;6855;1486;;1006;;;;Bank charges
+11,5;S;;;;;6855;1486;;1306;;;;monatlicher Kartenpreis
+18,36;S;;;;;2300;1486;;1606;;;;Bayerischer Rundfunk
+5,39;S;;;;;6495;1486;;1606;;;;Hetzner Online GmbH
+924,69;S;;;;;2200;1486;;1606;;;;Techniker Krankenkasse
+34,99;S;;;;;6495;1486;;1706;;;;1+1 Telecom GmbH
+35,77;S;;;;;6495;1486;;1706;;;;TWILIO INC
+11,71;S;;;;;6805;1486;9;2306;;;;giffgaff
+20,27;S;;;;;6805;1486;9;2306;;;;Telefonica Germany GmbH + Co. OHG
+2,03;S;;;;;6855;1486;;2406;;;;Credit card charges
+11,09;S;;;;;6855;1486;;2506;;;;Halifax bank charges
+242,63;S;;;;;6673;1486;;2606;;;;Lufthansa 220267586008
+20,7;S;;;;;6855;1486;;3006;;;;Bank charges
+636,87;H;;;;;2180;1486;;3006;;;;Deutsche Post AG
+58;S;;;;;6673;1486;;0107;;;;DB VERTRIEB GMBH
+23;S;;;;;6495;1486;;0107;;;;OPENAI *CHATGPT SUBSCR
+0;H;6200;;;GBP;4338;1486;;0107;JAG20250428.1 JAG20250526.1;;;SURVEY SUPPLIES LI
+117,39;S;;;;;2300;1486;;0107;;;;WEG HOEHENKIRCHEN
+850;H;;;;;4338;1486;;0107;JAG20250626.4;;;ZENITH LANDMALING A/S
+80;S;;;;;2300;1486;;0207;;;;e.on
+3167,1;H;;;;;2150;1486;;0307;;;;Finanzamt 80303 München
+4820;H;;;;;4338;1486;;0307;JAG20250428.2 JAG20250526.2;;;PRECISE CONSTRUCTION INSTRUMNETS L
+201,41;S;;;;;6530;1486;;0407;;;;DVLA VEHICLE TAX
+11,09;S;;;;;6855;1486;;0407;;;;Halifax bank charges
+950;S;;;;;6680;1486;;0407;;;;HUNTINGDON OSTEOPA
+34,51;S;;;;;6495;1486;;0707;;;;TWILIO INC
+11,5;S;;;;;6855;1486;;1407;;;;monatlicher Kartenpreis
+18,36;S;;;;;2300;1486;;1507;;;;Bayerischer Rundfunk
+924,69;S;;;;;2200;1486;;1507;;;;Techniker Krankenkasse
+92,33;S;;;;;6673;1486;;1507;;;;Trainline
+27,06;S;;;;;6673;1486;;1507;;;;Trainline
+5,39;S;;;;;6495;1486;;1607;;;;Hetzner Online GmbH
+16,63;S;;;;;6673;1486;;1607;;;;Transport for London
+34,99;S;;;;;6495;1486;;1707;;;;1+1 Telecom GmbH
+34,63;S;;;;;6495;1486;;1707;;;;TWILIO INC
+19,98;S;;;;;6805;1486;9;1807;;;;Telefonica Germany GmbH + Co. OHG
+11,57;S;;;;;6805;1486;9;2307;;;;giffgaff
+27,36;S;;;;;6673;1486;;2307;;;;Trainline
+16,63;S;;;;;6673;1486;;2307;;;;Transport for London
+0,18;S;;;;;6855;1486;;2407;;;;Bank charges
+8,77;S;;;;;6855;1486;;2407;;;;Credit card charges
+0;H;550;;;GBP;4338;1486;;2407;JAG20250526.3;;;TRI-TECH LIMITED
+299,98;S;;;;;6673;1486;;2607;;;;EUROWINGSVPGHUX_327619
+254,91;S;;;;;6673;1486;;2807;;;;LUFTHAN2202230273432
+660,68;H;;;;;2180;1486;;3107;;;;Deutsche Post AG
+58;S;;;;;6673;1486;;0108;;;;DB VERTRIEB GMBH
+950;S;;;;;6680;1486;;0108;;;;HUNTINGDON OSTEOPA
+23;S;;;;;6495;1486;;0108;;;;OPENAI *CHATGPT SUBSCR
+35,35;S;;;;;6495;1486;;0108;;;;TWILIO INC
+304,25;S;;;;;2300;1486;;0108;;;;WEG HOEHENKIRCHEN
+80;S;;;;;2300;1486;;0408;;;;e.on
+21;S;;;;;6673;1486;;0408;;;;EUROWINGSVPGHUX_328440
+42,5;S;;;;;6673;1486;;0608;;;;Hamburg Welcome Center
+2;S;;;;;7610;1486;;1108;;;;Gemeinde Höhenkirchen-Siegertsbrunn
+0;H;6200;;;GBP;4338;1486;;1108;JAG20250626.1 JAG20250725.1;;;SURVEY SUPPLIES LI
+34,75;S;;;;;6495;1486;;1108;;;;TWILIO INC
+4820;H;;;;;4338;1486;;1208;JAG20250626.2 JAG20250725.2;;;PRECISE CONSTRUCTION INSTRUMNETS L
+44,1;S;;;;;6673;1486;;1208;;;;Trainline
+198,25;S;;;;;6815;1486;;1308;;;;AA MEMBERSHIP
+16,63;S;;;;;6673;1486;;1308;;;;Transport for London
+11,5;S;;;;;6855;1486;;1408;;;;monatlicher Kartenpreis
+18,36;S;;;;;2300;1486;;1508;;;;Bayerischer Rundfunk
+924,69;S;;;;;2200;1486;;1508;;;;Techniker Krankenkasse
+5,39;S;;;;;6495;1486;;1608;;;;Hetzner Online GmbH
+3643,24;S;;;;;6680;1486;;1708;;;;Booking.com Perth accomodation
+165,73;S;;;;;6673;1486;;1808;;;;BKG*BOOKING.COM FLIGHT
+29,99;S;;;;;6495;1486;;1808;;;;GOOGLE*GOOGLE ONE
+34,99;S;;;;;6495;1486;;1908;;;;1+1 Telecom GmbH
+17,5;S;;;;;7610;1486;;1908;;;;Gemeinde Hohenkirchen-Siegertsbrunn
+924;H;;;;;7610;1486;;2008;;;;Gemeinde Hohenkirchen-Siegertsbrunn (refund)
+74,35;S;;;;;6530;1486;;2008;;;;Halfords
+34,73;S;;;;;6495;1486;;2008;;;;TWILIO INC
+23,26;S;;;;;6805;1486;9;2108;;;;Telefonica Germany GmbH + Co. OHG
+0;H;550;;;GBP;4338;1486;;2108;JAG20250725.4;;;TRI-TECH LIMITED
+11,58;S;;;;;6805;1486;9;2308;;;;giffgaff
+22,86;S;;;;;6530;1486;;2508;;;;Halfords
+12,01;S;;;;;6815;1486;;2508;;;;Westfield Fasteners Lt
+37,09;S;;;;;6815;1486;;2508;;;;Wickes
+13,94;S;;;;;6855;1486;;2708;;;;Credit card charges
+9,85;S;;;;;6673;1486;;2708;;;;Jones the Grocer
+41,41;S;;;;;6673;1486;;2708;;;;Trainline
+16,63;S;;;;;6673;1486;;2808;;;;Transport for London
+660,68;H;;;;;2180;1486;;2908;;;;Deutsche Post AG
+2733;S;;;;;2150;1486;;2908;;;;Finanzamt 80303 München
+3;S;;;;;7610;1486;;2908;;;;Gemeinde Höhenkirchen-Siegertsbrunn
+11,09;S;;;;;6855;1486;;2908;;;;Halifax bank charges
+14;S;;;;;6673;1486;;2908;;;;LUFTHAN2204091136056
+34,6;S;;;;;6495;1486;;3008;;;;TWILIO INC
+58;S;;;;;6673;1486;;0109;;;;DB VERTRIEB GMBH
+23;S;;;;;6495;1486;;0109;;;;OPENAI *CHATGPT SUBSCR
+304,25;S;;;;;2300;1486;;0109;;;;WEG HOEHENKIRCHEN
+80;S;;;;;2300;1486;;0209;;;;e.on
+700;S;;;;;7610;1486;;0209;;;;Gemeinde Höhenkirchen-Siegertsbrunn
+120;S;;;;;2150;1486;;0309;;;;Bayerisches Rotes Kreuz Kreisverban d Munchen
+950;S;;;;;6680;1486;;0309;;;;HUNTINGDON OSTEOPA
+454,84;S;;;;;6673;1486;;0409;;;;BRITISH A40771422966
+34,81;S;;;;;6495;1486;;0509;;;;TWILIO INC
+388,49;S;;;;;6673;1486;;0809;;;;BKG*BOOKING.COM FLIGHT
+3200,74;S;;;;;6827;1486;9;0909;;;;Kanzlei Langer. Tratz. Aigner - Ste uerberaterpartnerschaft mbB
+11,5;S;;;;;6855;1486;;1209;;;;monatlicher Kartenpreis
+35,07;S;;;;;6495;1486;;1209;;;;TWILIO INC
+18,36;S;;;;;2300;1486;;1509;;;;Bayerischer Rundfunk
+426,09;S;;;;;6530;1486;;1509;;;;FOUR PAW RACING
+11,09;S;;;;;6855;1486;;1509;;;;Halifax bank charges
+924,69;S;;;;;2200;1486;;1509;;;;Techniker Krankenkasse
+5,39;S;;;;;6495;1486;;1609;;;;Hetzner Online GmbH
+27,14;S;;;;;6673;1486;;1609;;;;Trainline
+34,99;S;;;;;6495;1486;;1709;;;;1+1 Telecom GmbH
+46,4;S;;;;;6673;1486;;1709;;;;Transport for London
+34,09;S;;;;;6495;1486;;1709;;;;TWILIO INC
+23;S;;;;;6495;1486;;1809;;;;OPENAI *CHATGPT SUBSCR
+21,06;S;;;;;6805;1486;9;1809;;;;Telefonica Germany GmbH + Co. OHG
+54,87;S;;;;;6530;1486;;2009;;;;Shell
+11,48;S;;;;;6805;1486;9;2309;;;;giffgaff
+34,14;S;;;;;6495;1486;;2309;;;;TWILIO INC
+0;H;550;;;GBP;4338;1486;;2509;JAG20250828.3;;;TRI-TECH LIMITED
+15,46;S;;;;;6855;1486;;2609;;;;Credit card charges
+405,35;S;;;;;6673;1486;;2609;;;;LUFTHAN2202233667436
+27,18;S;;;;;6673;1486;;2609;;;;Trainline
+16,63;S;;;;;6673;1486;;2609;;;;Transport for London
+11,5;S;;;;;6673;1486;;2909;;;;Elk Bakery
+3;S;;;;;7610;1486;;2909;;;;Gemeinde Höhenkirchen-Siegertsbrunn
+20,7;S;;;;;6855;1486;;3009;;;;Bank charges
+660,68;H;;;;;2180;1486;;3009;;;;Deutsche Post AG
+94,03;S;;;;;6673;1486;;3009;;;;EMIRATES
+58;S;;;;;6673;1486;;0110;;;;DB VERTRIEB GMBH
+950;S;;;;;6680;1486;;0110;;;;HUNTINGDON OSTEOPA
+23;S;;;;;6495;1486;;0110;;;;OPENAI *CHATGPT SUBSCR
+4500;H;;;;;4338;1486;;0110;JAG20250930.1;;;TECHSOL TECHNICAL
+304,25;S;;;;;2300;1486;;0110;;;;WEG HOEHENKIRCHEN
+80;S;;;;;2300;1486;;0210;;;;e.on
+34,41;S;;;;;6495;1486;;0310;;;;TWILIO INC
+293,44;S;;;;;6815;1486;;0710;;;;ADMIRAL INSURANCE
+0;H;4700;;;GBP;4338;1486;;0810;JAG20250725.1 JAG20250828.1;;;SURVEY SUPPLIES LI
+4220;H;;;;;4338;1486;;1310;JAG20250828.2 JAG20250925.2;;;PRECISE CONSTRUCTION INSTRUMNETS L
+44,98;S;;;;;6673;1486;;1410;;;;EMIRATES
+16;S;;;;;6673;1486;;1410;;;;Emirates Leisure Retail
+11,5;S;;;;;6855;1486;;1410;;;;monatlicher Kartenpreis
+34,6;S;;;;;6495;1486;;1410;;;;TWILIO INC
+18,36;S;;;;;2300;1486;;1510;;;;Bayerischer Rundfunk
+924,69;S;;;;;2200;1486;;1510;;;;Techniker Krankenkasse
+5,39;S;;;;;6495;1486;;1610;;;;Hetzner Online GmbH
+34,99;S;;;;;6495;1486;;1710;;;;1+1 Telecom GmbH
+24,5;S;;;;;6673;1486;;1710;;;;Dubai Duty Free
+5,37;S;;;;;6673;1486;;1710;;;;Emirates Leisure Retail
+23;S;;;;;6495;1486;;1810;;;;OPENAI *CHATGPT SUBSCR
+39,7;S;;;;;6805;1486;9;2010;;;;Telefonica Germany GmbH + Co. OHG
+11,52;S;;;;;6805;1486;9;2310;;;;giffgaff
+0;H;550;;;GBP;4338;1486;;2310;JAG20250925.3;;;TRI-TECH LIMITED
+34,5;S;;;;;6495;1486;;2410;;;;TWILIO INC
+5;S;;;;;6673;1486;;2610;;;;UBER   *TRIP
+10,63;S;;;;;6855;1486;;2710;;;;Credit card charges
+96,98;S;;;;;6673;1486;;2710;;;;UBER   *TRIP
+660,68;H;;;;;2180;1486;;3110;;;;Deutsche Post AG
+19,35;S;;;;;6495;1486;;3110;;;;Iphone Georgia
+109,65;S;;;;;6673;1486;;3110;;;;Ltd Bonisi (Tblisi)
+15,87;S;;;;;6673;1486;;0111;;;;Costa Coffee
+23;S;;;;;6495;1486;;0111;;;;OPENAI *CHATGPT SUBSCR
+58;S;;;;;6673;1486;;0311;;;;DB VERTRIEB GMBH
+80;S;;;;;2300;1486;;0311;;;;e.on
+35,02;S;;;;;6495;1486;;0311;;;;TWILIO INC
+304,25;S;;;;;2300;1486;;0311;;;;WEG HOEHENKIRCHEN
+258,99;S;;;;;6673;1486;;0511;;;;Flights on Booking.com
+11,09;S;;;;;6855;1486;;0511;;;;Halifax bank charges
+950;S;;;;;6680;1486;;0511;;;;HUNTINGDON OSTEOPA
+0;H;2000;;;GBP;4338;1486;;0511;JAG20250828.4 JAG20250925.4;;;JWG SURVEY & ENGIN
+146,14;S;;;;;6673;1486;;0511;;;;LUFTHAN2202235804740
+145,49;S;;;;;6673;1486;;0511;;;;LUFTHAN2202235815846
+345,08;S;;;;;6673;1486;;0711;;;;LUFTHAN2202235817505
+345,08;S;;;;;6673;1486;;0711;;;;LUFTHAN2202235817506
+34,74;S;;;;;6495;1486;;0811;;;;TWILIO INC
+7,25;S;;;;;6673;1486;;1111;;;;Allresto Flughafen
+26,74;S;;;;;6673;1486;;1111;;;;Trainline
+16,63;S;;;;;6673;1486;;1211;;;;Transport for London
+35,65;S;;;;;6495;1486;;1211;;;;TWILIO INC
+11,5;S;;;;;6855;1486;;1411;;;;monatlicher Kartenpreis
+34,5;S;;;;;6495;1486;;1411;;;;TWILIO INC
+18,36;S;;;;;2300;1486;;1711;;;;Bayerischer Rundfunk
+5,39;S;;;;;6495;1486;;1711;;;;Hetzner Online GmbH
+1293,99;S;;;;;2200;1486;;1711;;;;Techniker Krankenkasse
+343,66;S;;;;;6495;1486;;1811;;;;1+1 Telecom GmbH
+23;S;;;;;6495;1486;;1811;;;;OPENAI *CHATGPT SUBSCR
+34,9;S;;;;;6495;1486;;1911;;;;TWILIO INC
+17,5;S;;;;;7610;1486;;2011;;;;Gemeinde Hohenkirchen-Siegertsbrunn
+22,81;S;;;;;6805;1486;9;2011;;;;Telefonica Germany GmbH + Co. OHG
+0;H;550;;;GBP;4338;1486;;2011;JAG20251025.3;;;TRI-TECH LIMITED
+11,39;S;;;;;6805;1486;9;2311;;;;giffgaff
+11,04;S;;;;;6855;1486;;2711;;;;Credit card charges
+46,71;S;;;;;6530;1486;;2711;;;;Shell
+2733;S;;;;;2150;1486;;2711;;;;To Finanzamt Munchen
+660,68;H;;;;;2180;1486;;2811;;;;Deutsche Post AG
+10,45;S;;;;;6673;1486;;2811;;;;Jones the Grocer
+17,22;S;;;;;6673;1486;;2811;;;;Jones the Grocer
+296,64;S;;;;;6673;1486;;2811;;;;LUFTHAN2202236955842
+27,11;S;;;;;6673;1486;;2811;;;;Trainline
+34,64;S;;;;;6495;1486;;2811;;;;TWILIO INC
+16,63;S;;;;;6673;1486;;2911;;;;Transport for London
+106,88;S;;;;;6815;1486;;0112;;;;CONTINENTALE/EUROPA VERBUND
+58;S;;;;;6673;1486;;0112;;;;DB VERTRIEB GMBH
+237,28;H;;;;;2300;1486;;0112;;;;e.on
+23;S;;;;;6495;1486;;0112;;;;OPENAI *CHATGPT SUBSCR
+304,25;S;;;;;2300;1486;;0112;;;;WEG HOEHENKIRCHEN
+80;S;;;;;2300;1486;;0212;;;;e.on
+11,09;S;;;;;6855;1486;;0212;;;;Halifax bank charges
+3;S;;;;;7610;1486;;0312;;;;Gemeinde Höhenkirchen-Siegertsbrunn
+0;H;4450;;;GBP;4338;1486;;0312;JAG20250828.1 JAG20250925.1;;;SURVEY SUPPLIES LI
+2355;H;;;;;4338;1486;;0412;JAG20251201.2;;;HYDRODIAGNOSTICS LTD GEORGI A. TBILISI. SABURTALOS DIST
+950;S;;;;;6680;1486;;0512;;;;HUNTINGDON OSTEOPA
+34,67;S;;;;;6495;1486;;0812;;;;TWILIO INC
+4,5;S;;;;;6673;1486;;0912;;;;Allresto Flughafen
+1,9;S;;;;;6673;1486;;0912;;;;Allresto Flughafen
+11,09;S;;;;;6855;1486;;1212;;;;Halifax bank charges
+11,5;S;;;;;6855;1486;;1212;;;;monatlicher Kartenpreis
+3,7;S;;;;;6673;1486;;1312;;;;Lufthansa Retail inMot
+4,5;S;;;;;6673;1486;;1412;;;;Allresto Flughafen
+17,71;S;;;;;6673;1486;;1412;;;;Trainline
+18,36;S;;;;;2300;1486;;1512;;;;Bayerischer Rundfunk
+1035,56;S;;;;;6673;1486;;1512;;;;LUFTHAN2202237604048
+45;S;;;;;6673;1486;;1512;;;;LUFTHAN2204094502674
+1411,99;S;;;;;2200;1486;;1512;;;;Techniker Krankenkasse
+16,63;S;;;;;6673;1486;;1512;;;;Transport for London
+197,91;S;;;;;6530;1486;;1612;;;;DVLA VEHICLE TAX
+5,39;S;;;;;6495;1486;;1612;;;;Hetzner Online GmbH
+233,96;S;;;;;6495;1486;;1712;;;;1+1 Telecom GmbH
+23;S;;;;;6495;1486;;1812;;;;OPENAI *CHATGPT SUBSCR
+20,27;S;;;;;6805;1486;9;1812;;;;Telefonica Germany GmbH + Co. OHG
+28,62;S;;;;;6673;1486;;1812;;;;Trainline
+0;H;1360;;;GBP;4338;1486;;1912;JAG20251025.4;;;JWG SURVEY & ENGIN
+16,63;S;;;;;6673;1486;;1912;;;;Transport for London
+11,47;S;;;;;6805;1486;9;2312;;;;giffgaff
+14;S;;;;;6673;1486;;2312;;;;LUFTHAN2204094810860
+4,5;S;;;;;6673;1486;;2412;;;;Allresto Flughafen
+34,28;S;;;;;6495;1486;;2812;;;;TWILIO INC
+13,93;S;;;;;6855;1486;;3012;;;;Credit card charges

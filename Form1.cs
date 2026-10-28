@@ -12,32 +12,17 @@ namespace TaxSolutions
         public Form1()
         {
             InitializeComponent();
-            SetConversionButtonsEnabled(false);
+            SetConversionButtonsEnabled(true);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form1_Load(object? sender, EventArgs e)
         {
             SetCompiledDateLabel();
+            LoadFileSelectionPreferences();
         }
 
 
-        private void BrowseCsvButton_Click(object sender, EventArgs e)
-        {
-            using OpenFileDialog dialog = new OpenFileDialog();
-
-            dialog.Title = "Select CSV File";
-            dialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
-            dialog.Multiselect = false;
-
-            DialogResult result = dialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                CsvFilePathTextBox.Text = dialog.FileName;
-            }
-        }
-
-        private void DeutscheBankFormatButton_Click(object sender, EventArgs e)
+        private void DeutscheBankFormatButton_Click(object? sender, EventArgs e)
         {
             string? csvPath = TryGetSelectedCsvPath();
             if (csvPath is null)
@@ -71,13 +56,6 @@ namespace TaxSolutions
 
 
 
-        private static string[] SplitHalifaxCsvLine(string line)
-        {
-            // Your sample contains a leading apostrophe in Sort Code field and no quoted commas.
-            // Deterministic/simple split by comma is therefore correct for the provided format.
-            return line.Split(',', StringSplitOptions.None);
-        }
-
         private static DateTime? TryParseHalifaxDate(string value)
         {
             // Halifax sample uses dd/MM/yyyy.
@@ -109,7 +87,7 @@ namespace TaxSolutions
                 throw new InvalidOperationException("Input file does not contain sufficient rows for Deutsche Bank conversion.");
             }
 
-            // Strip rows 1–8 (1-based) => remove first 8 lines (0..7)
+            // Strip rows 1ï¿½8 (1-based) => remove first 8 lines (0..7)
             // Strip last row => remove final line
 
 
@@ -127,9 +105,10 @@ namespace TaxSolutions
             // The first remaining row should be the header row.
             string headerLine = NormalizeDeutscheBankLine(allLines[headerIndex]);
 
-            if (!headerLine.StartsWith("Booking date", StringComparison.OrdinalIgnoreCase))
+            if (!(headerLine.StartsWith(value: "Booking date", comparisonType: StringComparison.OrdinalIgnoreCase) ||
+                  headerLine.StartsWith(value: "Buchungstag", comparisonType: StringComparison.OrdinalIgnoreCase)))
             {
-                throw new InvalidOperationException("Expected Deutsche Bank header row was not found after stripping rows 1–8.");
+                throw new InvalidOperationException(message: "Expected Deutsche Bank header row was not found after stripping rows 1ï¿½8.");
             }
 
             List<OutputRow> dataRows = new List<OutputRow>();
@@ -151,6 +130,9 @@ namespace TaxSolutions
                     // Deterministic: skip malformed lines rather than guessing structure.
                     continue;
                 }
+
+                string beneficiary = cols[3].Trim();
+                if (IsExcludedDeutscheBankMerchant(sourceLine: allLines[i], normalizedDescription: beneficiary)) continue;
 
                 string debitRaw = cols[15].Trim();    // source col 16
                 string credit = cols[16].Trim();      // source col 17
@@ -177,22 +159,22 @@ namespace TaxSolutions
                 string bookingDateRaw = cols[0].Trim();
                 DateTime? bookingDate = TryParseDbankDate(bookingDateRaw);
 
-                // Deterministic: rows without a valid booking date cannot participate in month grouping.
+                // Deterministic: rows without a valid booking date cannot participate in date sorting.
                 if (bookingDate is null)
                 {
                     continue;
                 }
 
-                string beneficiary = cols[3].Trim();
+
 
                 // Skip internal transfer line (deterministic exclusion rule)
-                if (string.Equals(
-                        beneficiary,
-                        "DEUTSCHE KREDITBANK AKTIENGESELLSCH AFT",
-                        StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
+                //if (string.Equals(
+                //        beneficiary,
+                //        "DEUTSCHE KREDITBANK AKTIENGESELLSCH AFT",
+                //        StringComparison.OrdinalIgnoreCase))
+                //{
+                //    continue;
+                //}
 
 
                 // Column 2 sort key (keep your existing hardening)
@@ -210,17 +192,15 @@ namespace TaxSolutions
                 // 3 = Credit
                 // 4 = Debit
                 // 5 = Currency
-                // 6 = TaxCode (blank)
 
                 dataRows.Add(new OutputRow(
                     BookingDate: bookingDate.Value.Date,
                     Invoice: "",
-                    Beneficiary: beneficiary,
+                    Beneficiary: NormalizeBankDescription(description: beneficiary),
                     Credit: credit,
                     Debit: debit,
                     Currency: currency,
-                    TaxCode: "",
-                    SortKey: beneficiarySortKey
+                    SortKey: NormalizeBankDescription(description: beneficiary)
                 ));
 
             }
@@ -230,18 +210,17 @@ namespace TaxSolutions
                 throw new InvalidOperationException("No transaction rows were parsed after stripping and normalization.");
             }
 
-            // Sort by column 4 (string), then by column 1 (date if parseable, else raw string)
-            dataRows = MonthGroupedSort(dataRows, r => r.BookingDate, r => r.SortKey);
+            // Sort by transaction description, then transaction date across the entire report.
+            dataRows = DescriptionDateSort(dataRows, r => r.BookingDate, r => r.SortKey);
 
 
-            string yyyymm = dataRows[0].BookingDate.ToString("yyyyMM", CultureInfo.InvariantCulture);
+            string yyyymm = dataRows.Min(selector: row => row.BookingDate).ToString("yyyyMM", CultureInfo.InvariantCulture);
 
             WriteOutputCsv(
                 inputCsvPath,
                 "Dbank",
                 yyyymm,
-                dataRows,
-                TaxCodeRules);
+                rows: dataRows, sourceBank: SourceBankDeutscheBank);
 
         }
 
@@ -321,7 +300,7 @@ namespace TaxSolutions
             }
 
             // Insert blank Invoice between columns 1 and 2; swap Debit/Credit positions
-            return string.Join(",", c1, string.Empty, c4, c17, c16, c18, string.Empty);
+            return string.Join(",", c1, string.Empty, c4, c17, c16, c18);
 
         }
 
@@ -364,7 +343,7 @@ namespace TaxSolutions
 
         private string? TryGetSelectedCsvPath()
         {
-            string? csvPath = CsvFilePathTextBox.Text;
+            string? csvPath = SelectedBankCsvPath(target: CsvFilePathTextBox);
 
             if (string.IsNullOrWhiteSpace(csvPath))
             {
@@ -393,132 +372,7 @@ namespace TaxSolutions
         }
 
 
-        private void ConvertHalifax(string inputCsvPath)
-        {
-            string[] allLines = File.ReadAllLines(inputCsvPath);
-
-            if (allLines.Length < 2)
-            {
-                throw new InvalidOperationException("Input file does not contain sufficient rows for Halifax conversion.");
-            }
-
-            // Row 1 is header. Data starts at row 2.
-            int headerIndex = 0;
-            int firstDataIndex = 1;
-            int endExclusive = allLines.Length;
-
-            string headerLine = allLines[headerIndex];
-
-            if (!headerLine.StartsWith("Transaction Date", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidOperationException("Input file does not appear to be a Halifax export (header mismatch).");
-            }
-
-            List<OutputRow> dataRows = new();
-
-            for (int i = firstDataIndex; i < endExclusive; i++)
-            {
-                string line = allLines[i];
-
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                string[] cols = SplitHalifaxCsvLine(line);
-
-                // Need columns 1,5,6,7 => indices 0,4,5,6
-                if (cols.Length < 7)
-                {
-                    continue;
-                }
-
-                string dateRaw = cols[0].Trim();
-                DateTime? bookingDate = TryParseHalifaxDate(dateRaw);
-
-                if (bookingDate is null)
-                {
-                    throw new InvalidOperationException($"Unable to parse column 1 as a date: '{dateRaw}'.");
-                }
-
-                string transactionType = cols[1].Trim(); // Column 2
-                string description = cols[4].Trim();     // Column 5
-
-                // Your existing Halifax rule
-                if (string.Equals(transactionType, "TFR", StringComparison.OrdinalIgnoreCase))
-                {
-                    description = "(TFR) " + description;
-                }
-
-                if (string.Equals(description, "OUR CHARGE", StringComparison.OrdinalIgnoreCase))
-                {
-                    description = "Bank charges";
-                }
-
-                if (string.Equals(description, "JULIAN ANDRE LE FR", StringComparison.OrdinalIgnoreCase))
-                {
-                    description = "(TFR) J GRAY";
-                }
-                // Optional: your already-tested Halifax replacement work may be here already.
-                // Example (if you already implemented it elsewhere, keep it there):
-                // if (string.Equals(description, "OUR CHARGE", StringComparison.OrdinalIgnoreCase))
-                // {
-                //     description = "Bank charges";
-                // }
-
-                // Source col 6/7 are already in "Debit" and "Credit" positions for Halifax exports.
-                // Destination requires Credit then Debit (you already swapped in your earlier output formatting).
-                string debit = cols[5].Trim();   // Source col 6
-                string credit = cols[6].Trim();  // Source col 7
-
-
-
-
-
-
-
-                string sortKey = description;
-
-                dataRows.Add(new OutputRow(
-                    BookingDate: bookingDate.Value.Date,
-                    Invoice: "",
-                    Beneficiary: description,
-                    Credit: credit,
-                    Debit: debit,
-                    Currency: "GBP",
-                    TaxCode: "",
-                    SortKey: sortKey
-                ));
-            }
-
-            if (dataRows.Count == 0)
-            {
-                throw new InvalidOperationException("No data rows were parsed for Halifax conversion.");
-            }
-
-            dataRows = MonthGroupedSort(dataRows, r => r.BookingDate, r => r.SortKey);
-
-            string yyyymm = dataRows[0].BookingDate.ToString("yyyyMM", CultureInfo.InvariantCulture);
-
-            WriteOutputCsv(
-                inputCsvPath,
-                "Halifax",
-                yyyymm,
-                dataRows,
-                TaxCodeRules);
-        }
-
-
-
-
-
-
-
-
-
-
-
-        private void HalifaxExportButton_Click(object sender, EventArgs e)
+        private void HalifaxExportButton_Click(object? sender, EventArgs e)
         {
             string? csvPath = TryGetSelectedCsvPath();
             if (csvPath is null)
@@ -528,13 +382,15 @@ namespace TaxSolutions
 
             try
             {
-                ConvertHalifax(csvPath);
+                BankExportResult result = ConvertHalifax(inputCsvPath: csvPath);
+                _comments[1].Text = result.Summary;
 
-                MessageBox.Show(this,
-                    "Halifax conversion completed.",
-                    "Success",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                ShowExportSuccess(summary: result.Summary);
+            }
+            catch (InvalidDataException ex)
+            {
+                _comments[1].Text = ex.Message;
+                MessageBox.Show(owner: this, text: ex.Message, caption: "Halifax Conversion", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
@@ -553,168 +409,6 @@ namespace TaxSolutions
 
 
 
-
-        private void RevolutExportButton_Click(object sender, EventArgs e)
-        {
-            string? csvPath = TryGetSelectedCsvPath();
-            if (csvPath is null)
-            {
-                return;
-            }
-
-            try
-            {
-                ConvertRevolut(csvPath);
-
-                MessageBox.Show(this,
-                    "Revolut conversion completed.",
-                    "Success",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this,
-                    ex.Message,
-                    "Conversion Failed",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-        }
-
-
-        private void ConvertRevolut(string inputCsvPath)
-        {
-            string[] allLines = File.ReadAllLines(inputCsvPath);
-
-            if (allLines.Length < 2)
-            {
-                throw new InvalidOperationException("Input file does not contain sufficient rows for Revolut conversion.");
-            }
-
-            // Row 1 is header (1-based). Ignore it.
-            int headerIndex = 0;
-            int firstDataIndex = 1;
-            int endExclusive = allLines.Length;
-
-            string headerLine = RemoveQuotes(allLines[headerIndex]);
-
-            if (!headerLine.StartsWith("Art,Produkt,Datum des Beginns", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidOperationException("Input file does not appear to be a Revolut export (header mismatch).");
-            }
-
-            List<OutputRow> dataRows = new();
-
-            for (int i = firstDataIndex; i < endExclusive; i++)
-            {
-                string line = RemoveQuotes(allLines[i]);
-
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                string[] cols = SplitRevolutCsvLine(line);
-
-                // Need source columns: 3,5,6,8 => indices 2,4,5,7
-                if (cols.Length < 8)
-                {
-                    continue;
-                }
-
-                string dateRaw = cols[2].Trim();          // Source col 3
-                string description = cols[4].Trim();      // Source col 5
-                string amountRaw = cols[5].Trim();        // Source col 6
-                string currency = cols[7].Trim();         // Source col 8
-
-
-                if (description.StartsWith("Umgetauscht in ", StringComparison.OrdinalIgnoreCase))
-                {
-                    description = "(Private) Inter-account transfer";
-                }
-
-                if (description.StartsWith("Zahlung von ", StringComparison.OrdinalIgnoreCase))
-                {
-                    description = "(Private) Inter-account transfer";
-                }
-
-                DateTime? bookingDate = TryParseRevolutDate(dateRaw);
-                if (bookingDate is null)
-                {
-                    throw new InvalidOperationException($"Unable to parse column 3 as a date: '{dateRaw}'.");
-                }
-
-                if (!decimal.TryParse(
-                        amountRaw,
-                        NumberStyles.Number | NumberStyles.AllowLeadingSign,
-                        CultureInfo.InvariantCulture,
-                        out decimal amount))
-                {
-                    throw new InvalidOperationException($"Unable to parse column 6 as a number: '{amountRaw}'.");
-                }
-
-                string credit = "";
-                string debit = "";
-
-                if (amount > 0m)
-                {
-                    credit = amount.ToString(CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    // amount < 0 => multiply by -1; amount == 0 => treat as debit (0)
-                    debit = (amount * -1m).ToString(CultureInfo.InvariantCulture);
-                }
-
-                dataRows.Add(new OutputRow(
-                    BookingDate: bookingDate.Value.Date,
-                    Invoice: "",
-                    Beneficiary: description,
-                    Credit: credit,
-                    Debit: debit,
-                    Currency: currency,
-                    TaxCode: "",
-                    SortKey: description
-                ));
-            }
-
-            if (dataRows.Count == 0)
-            {
-                throw new InvalidOperationException("No data rows were parsed for Revolut conversion.");
-            }
-
-            dataRows = MonthGroupedSort(dataRows, r => r.BookingDate, r => r.SortKey);
-
-            string yyyymm = dataRows[0].BookingDate.ToString("yyyyMM", CultureInfo.InvariantCulture);
-
-            string fileCurrency = dataRows[0].Currency;
-            if (string.IsNullOrWhiteSpace(fileCurrency))
-            {
-                throw new InvalidOperationException("Unable to determine currency for file naming (currency was empty on first sorted row).");
-            }
-
-            WriteOutputCsv(
-                inputCsvPath,
-                "Revolut",
-                $"{yyyymm}_{fileCurrency}",
-                dataRows,
-                TaxCodeRules);
-        }
-
-
-
-
-        private static string RemoveQuotes(string value)
-        {
-            return value.Replace("\"", string.Empty, StringComparison.Ordinal);
-        }
-
-        private static string[] SplitRevolutCsvLine(string line)
-        {
-            // Sample data has no quoted commas. Deterministic split by comma.
-            return line.Split(',', StringSplitOptions.None);
-        }
 
         private static DateTime? TryParseRevolutDate(string value)
         {
@@ -789,64 +483,26 @@ namespace TaxSolutions
         }
 
 
-        private static List<T> MonthGroupedSort<T>(
-    List<T> rows,
-    Func<T, DateTime> getDate,
-    Func<T, string> getColumn2)
+        #region Description and date ordering
+        private static List<T> DescriptionDateSort<T>(List<T> rows, Func<T, DateTime> getDate, Func<T, string> getColumn2)
         {
-            if (rows is null)
+            ArgumentNullException.ThrowIfNull(argument: rows);
+            ArgumentNullException.ThrowIfNull(argument: getDate);
+            ArgumentNullException.ThrowIfNull(argument: getColumn2);
+            List<(T Row, int Index)> ordered = new(capacity: rows.Count);
+            for (int i = 0; i < rows.Count; i++) ordered.Add(item: (rows[i], i));
+            ordered.Sort(comparison: (left, right) =>
             {
-                throw new ArgumentNullException(nameof(rows));
-            }
-
-            // Step 1: Global chronological order (required by spec).
-            rows.Sort((a, b) => DateTime.Compare(getDate(a), getDate(b)));
-
-            // Step 2: Group by month key derived from the date.
-            // Step 3: Within each month group, sort by column 2 then by date.
-            Dictionary<string, List<T>> monthBuckets = new Dictionary<string, List<T>>(StringComparer.Ordinal);
-
-            for (int i = 0; i < rows.Count; i++)
-            {
-                T row = rows[i];
-                string monthKey = getDate(row).ToString("yyyyMM", CultureInfo.InvariantCulture);
-
-                if (!monthBuckets.TryGetValue(monthKey, out List<T>? bucket))
-                {
-                    bucket = new List<T>();
-                    monthBuckets.Add(monthKey, bucket);
-                }
-
-                bucket.Add(row);
-            }
-
-            // Month keys are yyyyMM, so Ordinal sort is chronological.
-            List<string> orderedMonths = monthBuckets.Keys.ToList();
-            orderedMonths.Sort(StringComparer.Ordinal);
-
-            List<T> final = new List<T>(rows.Count);
-
-            for (int m = 0; m < orderedMonths.Count; m++)
-            {
-                string month = orderedMonths[m];
-                List<T> bucket = monthBuckets[month];
-
-                bucket.Sort((x, y) =>
-                {
-                    int byCol2 = string.Compare(getColumn2(x), getColumn2(y), StringComparison.OrdinalIgnoreCase);
-                    if (byCol2 != 0)
-                    {
-                        return byCol2;
-                    }
-
-                    return DateTime.Compare(getDate(x), getDate(y));
-                });
-
-                final.AddRange(bucket);
-            }
-
-            return final;
+                int description = string.Compare(strA: getColumn2(left.Row), strB: getColumn2(right.Row), comparisonType: StringComparison.OrdinalIgnoreCase);
+                if (description != 0) return description;
+                int date = DateTime.Compare(t1: getDate(left.Row), t2: getDate(right.Row));
+                return date != 0 ? date : left.Index.CompareTo(value: right.Index);
+            });
+            List<T> result = new(capacity: rows.Count);
+            foreach ((T Row, int Index) entry in ordered) result.Add(item: entry.Row);
+            return result;
         }
+        #endregion
 
         private static readonly char[] UnicodeWhitespaceChars =
 {
@@ -908,6 +564,7 @@ namespace TaxSolutions
                 string amountRaw = cols[2].Trim();     // col 3
                 string currency = cols[3].Trim();      // col 4
                 string description = cols[4].Trim();   // col 5
+                if (IsExcludedMerchant(description: description)) continue;
 
                 // Skip internal transfer line (deterministic exclusion rule)
                 if (string.Equals(
@@ -1014,8 +671,8 @@ namespace TaxSolutions
 
                 desc = desc.Replace("*", string.Empty, StringComparison.Ordinal);
 
-                if (desc.Contains("1,95% für Währungsumrechn", StringComparison.OrdinalIgnoreCase) ||
-                    desc.Contains("1.95% für Währungsumrechn", StringComparison.OrdinalIgnoreCase) ||
+                if (desc.Contains("1,95% fï¿½r Wï¿½hrungsumrechn", StringComparison.OrdinalIgnoreCase) ||
+                    desc.Contains("1.95% fï¿½r Wï¿½hrungsumrechn", StringComparison.OrdinalIgnoreCase) ||
                     desc.Contains("1.95% fÃ¼r WÃ¤hrungsumrechn", StringComparison.OrdinalIgnoreCase) ||
                     desc.Contains("1,95% fÃ¼r WÃ¤hrungsumrechn", StringComparison.OrdinalIgnoreCase) ||
                     desc.Contains("monatlicher Kartenpreis", StringComparison.OrdinalIgnoreCase)
@@ -1040,12 +697,11 @@ namespace TaxSolutions
                 dataRows.Add(new OutputRow(
                     BookingDate: r.Date,
                     Invoice: "",
-                    Beneficiary: desc,
+                    Beneficiary: NormalizeBankDescription(description: desc),
                     Credit: credit,
                     Debit: debit,
                     Currency: r.Currency,
-                    TaxCode: "",
-                    SortKey: desc
+                    SortKey: NormalizeBankDescription(description: desc)
                 ));
             }
 
@@ -1058,43 +714,27 @@ namespace TaxSolutions
             dataRows = CollapseMonthlyBankCharges(dataRows);
 
 
-            dataRows = MonthGroupedSort(dataRows, x => x.BookingDate, x => x.SortKey);
+            dataRows = DescriptionDateSort(dataRows, x => x.BookingDate, x => x.SortKey);
 
-            string yyyymm = dataRows[0].BookingDate.ToString("yyyyMM", CultureInfo.InvariantCulture);
+            string yyyymm = dataRows.Min(selector: row => row.BookingDate).ToString("yyyyMM", CultureInfo.InvariantCulture);
 
             WriteOutputCsv(
                 inputCsvPath,
                 "CreditCard",
                 yyyymm,
-                dataRows,
-                TaxCodeRules);
+                rows: dataRows, sourceBank: "Credit Card");
         }
 
 
 
 
 
-        private void CreditCardExportButton_Click(object sender, EventArgs e)
-        {
-            string? csvPath = TryGetSelectedCsvPath();
-            if (csvPath is null) return;
-
-            try
-            {
-                ConvertCreditCard(csvPath);
-                MessageBox.Show(this, "Credit Card conversion completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Conversion Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Single, unified destination header for all converters.
+        // Shared destination header for the non-Halifax converters.
+        private const string ConvertedFolderName = "Converted";
         private const string OutputHeader =
-            "Booking date,Invoice,Beneficiary / Originator,Credit,Debit,Currency,Tax code";
+            "Booking date,Invoice,Beneficiary / Originator,Credit,Debit,Currency,Source Bank";
 
-        // Single, unified destination row model for all converters.
+        // Shared destination row model for the non-Halifax converters.
         private readonly record struct OutputRow(
             DateTime BookingDate,
             string Invoice,
@@ -1102,7 +742,6 @@ namespace TaxSolutions
             string Credit,
             string Debit,
             string Currency,
-            string TaxCode,
             string SortKey
         );
 
@@ -1114,8 +753,7 @@ namespace TaxSolutions
                 row.Beneficiary,
                 row.Credit,
                 row.Debit,
-                row.Currency,
-                row.TaxCode
+                row.Currency
             );
         }
 
@@ -1123,8 +761,7 @@ namespace TaxSolutions
             string inputCsvPath,
             string filePrefix,
             string yyyymm,
-            IEnumerable<OutputRow> rows,
-            IReadOnlyList<TaxCodeRule> taxCodeRules)
+            IEnumerable<OutputRow> rows, string sourceBank)
         {
             if (string.IsNullOrWhiteSpace(inputCsvPath))
                 throw new ArgumentException("Input path was empty.", nameof(inputCsvPath));
@@ -1138,40 +775,34 @@ namespace TaxSolutions
             if (rows is null)
                 throw new ArgumentNullException(nameof(rows));
 
-            if (taxCodeRules is null)
-                throw new ArgumentNullException(nameof(taxCodeRules));
 
             string inputFolder = Path.GetDirectoryName(inputCsvPath)
                 ?? throw new InvalidOperationException("Unable to determine input folder.");
 
+            inputFolder = Path.Combine(path1: inputFolder, path2: ConvertedFolderName);
+            Directory.CreateDirectory(path: inputFolder);
             string outputPath = Path.Combine(inputFolder, $"{filePrefix}_{yyyymm}.csv");
 
             using StreamWriter writer = new StreamWriter(outputPath, false);
             writer.WriteLine(OutputHeader);
             foreach (var r in rows)
             {
-                string taxCode = ResolveTaxCode(r.Beneficiary, taxCodeRules, defaultTaxCode: "999");
-
-                taxCode = ApplyCreditTaxCodeOverride(r, taxCode);
-
-                OutputRow withTax = r with { TaxCode = taxCode };
-
-                writer.WriteLine(ToOutputCsvLine(withTax));
+                writer.WriteLine(value: ToOutputCsvLine(r: r, sourceBank: sourceBank));
             }
         }
 
 
-        private static string ToOutputCsvLine(OutputRow r)
+        private static string ToOutputCsvLine(OutputRow r, string sourceBank)
         {
             // Deterministic CSV line generation (consistent ordering with OUTPUT_HEADER).
             return string.Join(",",
                 r.BookingDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                 r.Invoice ?? string.Empty,
-                r.Beneficiary ?? string.Empty,
+                NormalizeBankDescription(description: r.Beneficiary ?? string.Empty),
                 r.Credit ?? string.Empty,
                 r.Debit ?? string.Empty,
                 r.Currency ?? string.Empty,
-                r.TaxCode ?? string.Empty);
+                sourceBank);
         }
 
 
@@ -1273,7 +904,6 @@ namespace TaxSolutions
                     Credit: credit,
                     Debit: debit,
                     Currency: currency,
-                    TaxCode: "",
                     SortKey: "Monthly bank charges"
                 ));
             }
@@ -1298,239 +928,39 @@ namespace TaxSolutions
             return 0m;
         }
 
-        private void TaxCodeImportButton_Click(object sender, EventArgs e)
-        {
-            string? csvPath = TryGetSelectedCsvPath();
-            if (csvPath is null)
-            {
-                return;
-            }
-
-            string[] allLines = File.ReadAllLines(csvPath);
-
-            List<TaxCodeRule> rules = new(allLines.Length);
-
-            for (int i = 0; i < allLines.Length; i++)
-            {
-                string line = allLines[i];
-
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                char delimiter = DetectDelimiter(line);
-
-                // Deterministic split; if description contains delimiters, re-join tail.
-                string[] cols = line.Split(delimiter, StringSplitOptions.None);
-
-                if (cols.Length < 3)
-                {
-                    // Deterministic: skip malformed lines.
-                    continue;
-                }
-
-                string sollHaben = UnquoteAndTrim(cols[0]);
-                string taxCode = UnquoteAndTrim(cols[1]);
-
-                string description;
-                if (cols.Length == 3)
-                {
-                    description = UnquoteAndTrim(cols[2]);
-                }
-                else
-                {
-                    description = UnquoteAndTrim(string.Join(delimiter, cols.Skip(2)));
-                }
-
-                if (string.IsNullOrWhiteSpace(description) && string.IsNullOrWhiteSpace(taxCode))
-                {
-                    continue;
-                }
-
-                rules.Add(new TaxCodeRule(
-                    SollHaben: sollHaben,
-                    TaxCode: taxCode,
-                    Description: description
-                ));
-            }
-
-            if (rules.Count == 0)
-            {
-                _taxCodeRules = new List<TaxCodeRule>();
-                SetConversionButtonsEnabled(false);
-
-                MessageBox.Show(this,
-                    "No usable tax code rows were parsed.\nExpected format per line: Soll/Haben,Tax code,Description (no header).",
-                    "Import Failed",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-                return;
-            }
-
-            // Deterministic ordering (stable use later when scanning).
-            rules.Sort((a, b) =>
-            {
-                int byDesc = string.Compare(a.Description, b.Description, StringComparison.OrdinalIgnoreCase);
-                if (byDesc != 0) return byDesc;
-
-                int byCode = string.Compare(a.TaxCode, b.TaxCode, StringComparison.OrdinalIgnoreCase);
-                if (byCode != 0) return byCode;
-
-                return string.Compare(a.SollHaben, b.SollHaben, StringComparison.OrdinalIgnoreCase);
-            });
-
-            _taxCodeRules = rules;
-
-            SetConversionButtonsEnabled(true);
-
-            MessageBox.Show(this,
-                $"Tax code import completed.\nRows loaded: {_taxCodeRules.Count}",
-                "Success",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-
-            CsvFilePathTextBox.Text = string.Empty;
-
-
-        }
-
-
-
-
-        // Tax code mapping row loaded from CSV (Soll/Haben, Tax code, Description).
-        private readonly record struct TaxCodeRule(
-            string SollHaben,
-            string TaxCode,
-            string Description
-        );
-
-        // In-memory rules loaded by TaxCodeImportButton.
-        private List<TaxCodeRule> _taxCodeRules = new();
-
-        // Optional: expose read-only view for later use.
-        private IReadOnlyList<TaxCodeRule> TaxCodeRules => _taxCodeRules;
-
         private void SetConversionButtonsEnabled(bool enabled)
         {
             DeutscheBankFormatButton.Enabled = enabled;
             HalifaxExportButton.Enabled = enabled;
             RevolutExportButton.Enabled = enabled;
-            CreditCardExportButton.Enabled = enabled;
 
             DeutscheBankFormatButton.Visible = enabled;
             HalifaxExportButton.Visible = enabled;
             RevolutExportButton.Visible = enabled;
-            CreditCardExportButton.Visible = enabled;
+            RefreshConversionAvailability();
         }
 
-        private static char DetectDelimiter(string line)
-        {
-            bool hasSemicolon = line.Contains(';', StringComparison.Ordinal);
-            bool hasComma = line.Contains(',', StringComparison.Ordinal);
-
-            if (hasSemicolon && !hasComma) return ';';
-            if (hasComma && !hasSemicolon) return ',';
-            if (hasSemicolon && hasComma) return ';';
-
-            // Deterministic fallback (common in German exports).
-            return ';';
-        }
-
-        private static string UnquoteAndTrim(string value)
-        {
-            if (string.IsNullOrEmpty(value)) return string.Empty;
-            return value.Replace("\"", string.Empty, StringComparison.Ordinal).Trim();
-        }
-
-        private static string ResolveTaxCode(
-            string beneficiary,
-            IReadOnlyList<TaxCodeRule> taxCodeRules,
-            string defaultTaxCode)
-        {
-            if (string.IsNullOrWhiteSpace(defaultTaxCode))
-                throw new ArgumentException("Default tax code was empty.", nameof(defaultTaxCode));
-
-            if (string.IsNullOrEmpty(beneficiary))
-                return defaultTaxCode;
-
-            // Deterministic: first match wins, rule order defines precedence.
-            for (int i = 0; i < taxCodeRules.Count; i++)
-            {
-                TaxCodeRule rule = taxCodeRules[i];
-
-                if (string.IsNullOrWhiteSpace(rule.Description))
-                    continue;
-
-                if (beneficiary.IndexOf(rule.Description, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    // If a rule tax-code is empty, fall back deterministically.
-                    if (string.IsNullOrWhiteSpace(rule.TaxCode))
-                        return defaultTaxCode;
-
-                    return rule.TaxCode;
-                }
-            }
-
-            return defaultTaxCode;
-        }
-
-
-
+        #region Application footer
+        private const string ApplicationRevision = "021";
 
         private void SetCompiledDateLabel()
         {
-            try
-            {
-                string? exePath = Environment.ProcessPath;
-
-                if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
-                {
-                    lblCompiledDate.Text = "© GNAsoftware       gnajag2025@gmail.com";
-                    return;
-                }
-
-                DateTime buildDate = File.GetLastWriteTime(exePath);
-                string formattedDate = buildDate.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
-
-                lblCompiledDate.Text = $"© GNAsoftware       gnajag2025@gmail.com       {formattedDate}";
-            }
-            catch
-            {
-                // Deterministic fallback: never block or throw.
-                lblCompiledDate.Text = "GNAsoftware";
-            }
+            string assemblyLocation = typeof(Form1).Assembly.Location;
+            DateTime buildDate = string.IsNullOrWhiteSpace(value: assemblyLocation)
+                ? DateTime.Today
+                : File.GetLastWriteTime(path: assemblyLocation).Date;
+            lblCompiledDate.Text = $"Â© GNA Software {buildDate:yyyyMMdd} Revision {ApplicationRevision}";
         }
-
-
-        private static string ApplyCreditTaxCodeOverride(OutputRow row, string currentTaxCode)
-        {
-            if (string.IsNullOrWhiteSpace(row.Credit))
-            {
-                return currentTaxCode;
-            }
-
-            // If the existing tax code is 999, do not override.
-            if (string.Equals(currentTaxCode, "999", StringComparison.Ordinal))
-            {
-                return currentTaxCode;
-            }
-
-            string currency = (row.Currency ?? string.Empty).Trim();
-
-            if (string.Equals(currency, "GBP", StringComparison.OrdinalIgnoreCase))
-            {
-                return "4338-1";
-            }
-
-            return "2180";
-        }
-
-
-
-
-
+        #endregion
 
     }
 }
+
+
+
+
+
+
+
+
+

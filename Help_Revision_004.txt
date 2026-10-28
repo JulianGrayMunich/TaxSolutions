@@ -1,0 +1,14 @@
+TaxSolutions — Help — Revision 004
+
+1. Configuration
+Select the report year (default 2026) and From/To months. One to three consecutive months in the selected year are supported.
+Enter one positive monthly factor in each of the GBP to EUR, GBP to ZAR and EUR to ZAR cards. Each factor means destination currency per one unit of source currency.
+Factors are displayed and stored as decimal numbers with exactly six decimal places. Additional entered places are rounded to six; midpoint values round away from zero. Decimal points or decimal commas are accepted without grouping separators.
+Choose Save Configuration below the cards. Settings are saved beside the application in TaxSolutions.settings.json and restored at startup. Existing GBP-to-EUR settings are retained; new currency-pair fields start blank.
+
+2. Revolut statement download
+Bank statement CSV files can only be downloaded through the desktop link, not through the phone app.
+
+3. Bank conversion
+Select a bank tab, browse to its statement CSV file, then use its conversion button. The selected path is shared between bank tabs. Existing output files with the same name are overwritten.
+This revision stores report configuration. The three new Halifax reports and application of the saved rates remain the next stage. Volksbank conversion remains pending.
