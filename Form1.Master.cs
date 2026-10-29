@@ -16,6 +16,7 @@ namespace TaxSolutions
         private Button _masterBrowse = null!;
         private Button _masterGenerate = null!;
         private Button _masterHelp = null!;
+        private Button _submissionNotes = null!;
         private Label _masterFolderLabel = null!;
 
         private void BuildMasterTab()
@@ -50,12 +51,33 @@ namespace TaxSolutions
             _masterCommentsCard.Controls.Add(value: _masterComments);
             _masterHelp = new Button { Text = "?", AccessibleName = "Open TaxSolutions help", Font = new Font(familyName: "Arial", emSize: 16F, style: FontStyle.Bold) };
             _masterHelp.Click += ShowInterfaceHelp;
+            _submissionNotes = new Button { Text = "Submission Notes", AccessibleName = "Submission Notes", Image = CreateSubmissionNotesImage(), TextImageRelation = TextImageRelation.ImageBeforeText };
+            _submissionNotes.Click += (sender, e) => OpenTaxSolutionsHelp(fragment: "excel-submission");
+            _submissionNotes.Disposed += (sender, e) => _submissionNotes.Image?.Dispose();
+            _masterTab.Controls.Add(value: _submissionNotes);
             _masterTab.Controls.Add(value: _masterSourceCard);
             _masterTab.Controls.Add(value: _masterActionCard);
             _masterTab.Controls.Add(value: _masterCommentsCard);
             _masterTab.Controls.Add(value: _masterHelp);
             MainTabControl.TabPages.Insert(index: 0, tabPage: _masterTab);
             MainTabControl.SelectedTab = _masterTab;
+        }
+
+        private static Bitmap CreateSubmissionNotesImage()
+        {
+            Bitmap image = new(width: 32, height: 32);
+            using Graphics graphics = Graphics.FromImage(image: image);
+            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+            using SolidBrush background = new(color: Color.FromArgb(red: 224, green: 224, blue: 224));
+            using Pen outline = new(color: Color.FromArgb(red: 96, green: 96, blue: 96), width: 2F);
+            using SolidBrush foreground = new(color: Color.FromArgb(red: 64, green: 64, blue: 64));
+            using Font symbol = new(familyName: "Arial", emSize: 22F, style: FontStyle.Bold, unit: GraphicsUnit.Pixel);
+            using StringFormat format = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+            graphics.FillEllipse(brush: background, x: 2, y: 2, width: 28, height: 28);
+            graphics.DrawEllipse(pen: outline, x: 2, y: 2, width: 28, height: 28);
+            graphics.DrawString(s: "i", font: symbol, brush: foreground, layoutRectangle: new RectangleF(x: 2, y: 2, width: 28, height: 28), format: format);
+            return image;
         }
 
         private void LayoutMasterTab()
@@ -68,6 +90,7 @@ namespace TaxSolutions
             _masterActionCard.SetBounds(x: DisplayUnits(value: 20), y: DisplayUnits(value: 186), width: width - DisplayUnits(value: 40), height: DisplayUnits(value: 72));
             _masterGenerate.SetBounds(x: (_masterActionCard.ClientSize.Width - DisplayUnits(value: 270)) / 2, y: DisplayUnits(value: 23), width: DisplayUnits(value: 270), height: DisplayUnits(value: 30));
             _masterCommentsCard.SetBounds(x: DisplayUnits(value: 12), y: _masterTab.ClientSize.Height - DisplayUnits(value: 138), width: width - DisplayUnits(value: 24), height: DisplayUnits(value: 126));
+            _submissionNotes.SetBounds(x: _masterActionCard.Right - DisplayUnits(value: 180), y: _masterActionCard.Bottom + (_masterCommentsCard.Top - _masterActionCard.Bottom - DisplayUnits(value: 34)) / 2, width: DisplayUnits(value: 180), height: DisplayUnits(value: 34));
             _masterHelp.SetBounds(x: width - DisplayUnits(value: 54), y: DisplayUnits(value: 20), width: DisplayUnits(value: 34), height: DisplayUnits(value: 34));
         }
 
@@ -187,6 +210,9 @@ namespace TaxSolutions
         #endregion
     }
 }
+
+
+
 
 
 

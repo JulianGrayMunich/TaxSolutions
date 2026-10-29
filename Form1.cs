@@ -941,7 +941,7 @@ namespace TaxSolutions
         }
 
         #region Application footer
-        private const string ApplicationRevision = "021";
+        private const string ApplicationRevision = "023";
 
         private void SetCompiledDateLabel()
         {
@@ -955,6 +955,8 @@ namespace TaxSolutions
 
     }
 }
+
+
 
 
 
